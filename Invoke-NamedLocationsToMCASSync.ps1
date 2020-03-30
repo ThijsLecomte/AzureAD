@@ -1,3 +1,34 @@
+﻿<#
+.SYNOPSIS
+    This script syncs trusted named locations from Conditional Access to Corporate IP Ranges in MCAS
+
+.DESCRIPTION
+    This script is meant to run in Azure Automatinon and will query 3 three variables/credentials:
+        - Credential 'GraphAPI' which has an applicationID as username and applicationSecret as password
+            The application should have 'Policy.Read.All' application permissions
+        - tenantID
+        - Credential 'MCAS' which uses the MCAS URL as username and MCAS API KEY als password.
+            URL should the in the following format: 365bythijs.eu2.portal.cloudappsecurity.com
+
+    This script will run once and copy all trusted named locations from Conditional Access to corporate IP ranges in MCAS.
+    BE AWARE: if you currently have corporate IP ranges in MCAS, these will all be overwritten.
+
+    This script uses some undocumented MCAS API endpoints.
+
+.EXAMPLE
+    Use script to authenticate with O365
+    ..\Get-AADLicenseErrors..ps1 -ReportSender 'example@contoso.com' -ReportRecipient 'Example2@contoso.com' -SMTPServer "smtp.office365.com" -SMTPPort 587 -SMTPSSL True
+
+.EXAMPLE
+    Change the default logpath with the use of the parameter logPath
+    ..\Get-AADLicenseErrors..ps1 -logPath "C:\Windows\Temp\CustomScripts\Get-AADLicenseErrors.txt"
+
+.NOTES
+    File Name  : Invoke-NamedLocationsToMCASSyncLocal.ps1  
+    Author     : Thijs Lecomte 
+    Company    : The Collective Consulting
+#>
+
 function Invoke-MCASRestMethod {
     [CmdletBinding()]
     param (
